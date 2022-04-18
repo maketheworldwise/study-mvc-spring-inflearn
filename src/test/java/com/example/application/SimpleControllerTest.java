@@ -20,7 +20,7 @@ public class SimpleControllerTest {
 
     @Test
     public void hello() throws Exception {
-        this.mockMvc.perform(get("/hello/kevin"))
+        this.mockMvc.perform(get("/hello").param("name","kevin"))
                 .andDo(print())
                 .andExpect(content().string("hello kevin"));
     }
