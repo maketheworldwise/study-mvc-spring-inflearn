@@ -1,17 +1,19 @@
 package com.example.application;
 
+import org.hamcrest.Matchers;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.HttpHeaders;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @RunWith(SpringRunner.class)
 // @WebMvcTest는 웹과 관련된 빈을 등록해주기 때문에 PersonFormatter 빈을 등록해주지 않음
@@ -37,5 +39,22 @@ public class SimpleControllerTest {
         this.mockMvc.perform(get("/hello").param("id",savedPerson.getId().toString()))
                 .andDo(print())
                 .andExpect(content().string("hello kevin"));
+    }
+
+    @Test
+    public void helloStatic() throws Exception {
+        // 기본 ResourceHandler
+//        this.mockMvc.perform(get("/index.html"))
+//                .andDo(print())
+//                .andExpect(status().isOk())
+//                .andExpect(content().string(Matchers.containsString("index")));
+
+        // 직접 만든 ResourceHandler
+        this.mockMvc.perform(get("/mobile/index.html"))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(content().string(Matchers.containsString("mobile")))
+                .andExpect(header().exists(HttpHeaders.CACHE_CONTROL));
+
     }
 }
