@@ -3,10 +3,12 @@ package com.example.application;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.format.FormatterRegistry;
 import org.springframework.http.CacheControl;
+import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 @Configuration
@@ -39,4 +41,15 @@ public class WebConfig implements WebMvcConfigurer {
 //                // 응답으로 내보낼 리소스를 변경하는 방법
 //                .addTransformer()
     }
+
+//    @Override
+//    public void configureMessageConverters(List<HttpMessageConverter<?>> converters) {
+//        // 추가할 경우에는 기본적으로 제공하는 메시지 컨버터를 사용할 수 없음
+//    }
+
+
+//    @Override
+//    public void extendMessageConverters(List<HttpMessageConverter<?>> converters) {
+//        // 기본적으로 제공하는 메시지 컨버터에 추가
+//    }
 }

@@ -1,5 +1,6 @@
 package com.example.application;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.hamcrest.Matchers;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -8,6 +9,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -29,6 +31,9 @@ public class SimpleControllerTest {
 
     @Autowired
     PersonRepository personRepository;
+
+    @Autowired
+    ObjectMapper objectMapper;
 
     @Test
     public void hello() throws Exception {
@@ -56,5 +61,29 @@ public class SimpleControllerTest {
                 .andExpect(content().string(Matchers.containsString("mobile")))
                 .andExpect(header().exists(HttpHeaders.CACHE_CONTROL));
 
+    }
+
+    @Test
+    public void messageString() throws Exception {
+        this.mockMvc.perform(get("/message").content("body"))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(content().string("message body"));
+    }
+
+    @Test
+    public void jsonmessage() throws Exception {
+        Person person = new Person();
+        person.setId(10L);
+        person.setName("kevin");
+
+        String jsonString = objectMapper.writeValueAsString(person);
+
+        this.mockMvc.perform(get("/jsonmessage")
+                        .contentType(MediaType.APPLICATION_JSON) // JSON 요청을 보냄
+                        .accept(MediaType.APPLICATION_JSON) // JSON 응답을 기대
+                        .content(jsonString))
+                .andDo(print())
+                .andExpect(status().isOk());
     }
 }
