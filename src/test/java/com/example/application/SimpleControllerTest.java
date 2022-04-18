@@ -10,8 +10,14 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
+import org.springframework.oxm.Marshaller;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
+
+import javax.xml.transform.Result;
+import javax.xml.transform.stream.StreamResult;
+
+import java.io.StringWriter;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -34,6 +40,9 @@ public class SimpleControllerTest {
 
     @Autowired
     ObjectMapper objectMapper;
+
+    @Autowired
+    Marshaller marshaller; // WebConfig에 등록한 빈을 주입 받음
 
     @Test
     public void hello() throws Exception {
@@ -84,6 +93,30 @@ public class SimpleControllerTest {
                         .accept(MediaType.APPLICATION_JSON) // JSON 응답을 기대
                         .content(jsonString))
                 .andDo(print())
-                .andExpect(status().isOk());
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id").value(10L))
+                .andExpect(jsonPath("$.name").value("kevin"));
+    }
+
+    @Test
+    public void xmlmessage() throws Exception {
+        Person person = new Person();
+        person.setId(10L);
+        person.setName("kevin");
+
+        StringWriter stringWriter = new StringWriter();
+        Result result = new StreamResult(stringWriter);
+        marshaller.marshal(person, result);
+
+        String xmlString = stringWriter.toString();
+
+        this.mockMvc.perform(get("/jsonmessage")
+                        .contentType(MediaType.APPLICATION_XML) // XML 요청을 보냄
+                        .accept(MediaType.APPLICATION_XML) // XML 응답을 기대
+                        .content(xmlString))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(xpath("person/id").string("10"))
+                .andExpect(xpath("person/name").string("kevin"));
     }
 }

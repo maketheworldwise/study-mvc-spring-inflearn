@@ -1,9 +1,11 @@
 package com.example.application;
 
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.format.FormatterRegistry;
 import org.springframework.http.CacheControl;
 import org.springframework.http.converter.HttpMessageConverter;
+import org.springframework.oxm.jaxb.Jaxb2Marshaller;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
@@ -52,4 +54,11 @@ public class WebConfig implements WebMvcConfigurer {
 //    public void extendMessageConverters(List<HttpMessageConverter<?>> converters) {
 //        // 기본적으로 제공하는 메시지 컨버터에 추가
 //    }
+
+    @Bean
+    public Jaxb2Marshaller jaxb2Marshaller() {
+        Jaxb2Marshaller jaxb2Marshaller = new Jaxb2Marshaller();
+        jaxb2Marshaller.setPackagesToScan(Person.class.getPackageName()); // @XmlRootElement 어노테이션 스캔
+        return jaxb2Marshaller;
+    }
 }
