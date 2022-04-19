@@ -72,4 +72,63 @@ public class SampleControllerTest {
                 .andExpect(status().isOk());
 
     }
+
+    // Mapping 연습
+
+    @Test
+    public void getEvents() throws Exception {
+        this.mockMvc.perform(get("/events"))
+                .andDo(print())
+                .andExpect(status().isOk());
+
+    }
+
+    @Test
+    public void getEventWithId() throws Exception {
+        this.mockMvc.perform(get("/events/1"))
+                .andDo(print())
+                .andExpect(status().isOk());
+        this.mockMvc.perform(get("/events/2"))
+                .andDo(print())
+                .andExpect(status().isOk());
+        this.mockMvc.perform(get("/events/3"))
+                .andDo(print())
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    public void createEvent() throws Exception {
+        this.mockMvc.perform(post("/events")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON))
+                .andDo(print())
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    public void deleteEvent() throws Exception {
+        this.mockMvc.perform(delete("/events/1"))
+                .andDo(print())
+                .andExpect(status().isOk());
+        this.mockMvc.perform(delete("/events/2"))
+                .andDo(print())
+                .andExpect(status().isOk());
+        this.mockMvc.perform(delete("/events/3"))
+                .andDo(print())
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    public void putEvent() throws Exception {
+        this.mockMvc.perform(put("/events/1")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON))
+                .andDo(print())
+                .andExpect(status().isOk());
+        this.mockMvc.perform(put("/events/1")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON))
+                .andDo(print())
+                .andExpect(status().isOk());
+    }
 }
