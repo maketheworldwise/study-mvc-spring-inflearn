@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.support.SessionStatus;
 
 import javax.servlet.http.HttpSession;
+import java.time.LocalDateTime;
 
 @Controller
 @SessionAttributes("event")
@@ -45,5 +46,11 @@ public class SampleController {
         // 세션 비우기
         //sessionStatus.setComplete();
         return event;
+    }
+
+    @GetMapping("/events/sessionAttribute")
+    @ResponseBody
+    public void getSessionAttribute(@SessionAttribute LocalDateTime visitTime) {
+        System.out.println(visitTime);
     }
 }
