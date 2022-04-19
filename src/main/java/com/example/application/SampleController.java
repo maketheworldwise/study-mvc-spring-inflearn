@@ -1,11 +1,16 @@
 package com.example.application;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.support.SessionStatus;
+
+import javax.servlet.http.HttpSession;
 
 @Controller
+@SessionAttributes("event")
 public class SampleController {
 
     @GetMapping("/events/{id}")
@@ -25,6 +30,20 @@ public class SampleController {
                 System.out.println(e.toString());
             });
         }
+        return event;
+    }
+
+    @GetMapping("/events/sample")
+    @ResponseBody
+    public Event getEventSample(Model model) { //HttpSession session, SessionStatus sessionStatus) {
+        Event event = new Event();
+        event.setName("kevin");
+        event.setLimit(50);
+        model.addAttribute(event);
+        // 세션 추가
+        // session.setAttribute("event", event);
+        // 세션 비우기
+        //sessionStatus.setComplete();
         return event;
     }
 }
