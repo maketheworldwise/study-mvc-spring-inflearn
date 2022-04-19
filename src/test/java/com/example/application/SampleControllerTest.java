@@ -34,7 +34,7 @@ public class SampleControllerTest {
     public void getEvents() throws Exception {
         this.mockMvc.perform(get("/events")
                         .param("name", "kevin")
-                        .param("limit", "50"))
+                        .param("limit", "-1"))
                 .andDo(print())
                 .andExpect(status().isOk());
     }
