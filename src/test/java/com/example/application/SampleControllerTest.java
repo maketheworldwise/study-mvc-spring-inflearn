@@ -64,4 +64,12 @@ public class SampleControllerTest {
                                 containsString("HEAD"),
                                 containsString("OPTIONS"))));
     }
+
+    @Test
+    public void worldTest() throws Exception {
+        this.mockMvc.perform(get("/world"))
+                .andDo(print())
+                .andExpect(status().isOk());
+
+    }
 }

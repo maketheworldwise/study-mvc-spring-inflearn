@@ -29,4 +29,10 @@ public class SampleController {
     public String sample() {
         return "sample";
     }
+
+    @GetWorldMapping
+    @ResponseBody
+    public String world() {
+        return "world";
+    }
 }
