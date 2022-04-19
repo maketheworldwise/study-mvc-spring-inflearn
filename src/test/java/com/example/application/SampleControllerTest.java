@@ -24,8 +24,17 @@ public class SampleControllerTest {
     MockMvc mockMvc;
 
     @Test
-    public void getEvents() throws Exception {
+    public void getEvent() throws Exception {
         this.mockMvc.perform(get("/events/1;name=kevin"))
+                .andDo(print())
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    public void getEvents() throws Exception {
+        this.mockMvc.perform(get("/events")
+                        .param("name", "kevin")
+                        .param("limit", "50"))
                 .andDo(print())
                 .andExpect(status().isOk());
     }
