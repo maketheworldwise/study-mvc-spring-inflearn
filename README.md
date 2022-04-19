@@ -12,6 +12,11 @@
 - resourceHandler
 - httpMessageConverter
 
+스프링 MVC 활용
+
+- httpRequestMapping
+- httpRequestMappingPractice
+
 ## 참고
 
 - [강의 자료](https://docs.google.com/document/d/1n1NRQFowaYy3krfGRRXtAMHDf4KX1ypWPR5PJzAxiSk/edit)
