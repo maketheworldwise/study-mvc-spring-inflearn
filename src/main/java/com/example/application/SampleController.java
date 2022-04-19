@@ -2,9 +2,8 @@ package com.example.application;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-
-import javax.validation.Valid;
 
 @Controller
 public class SampleController {
@@ -20,7 +19,7 @@ public class SampleController {
 
     @GetMapping("/events")
     @ResponseBody
-    public Event getEvents(@Valid @ModelAttribute Event event, BindingResult bindingResult) {
+    public Event getEvents(@Validated(Event.ValidateName.class) @ModelAttribute Event event, BindingResult bindingResult) {
         if(bindingResult.hasErrors()) {
             bindingResult.getAllErrors().forEach(e -> {
                 System.out.println(e.toString());
