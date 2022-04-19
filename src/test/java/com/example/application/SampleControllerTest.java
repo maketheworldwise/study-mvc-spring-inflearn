@@ -7,11 +7,11 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
+import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
-import static org.hamcrest.CoreMatchers.containsString;
-import static org.hamcrest.CoreMatchers.hasItems;
+import static org.hamcrest.CoreMatchers.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -37,5 +37,16 @@ public class SampleControllerTest {
                         .param("limit", "-1"))
                 .andDo(print())
                 .andExpect(status().isOk());
+    }
+
+    @Test
+    public void getEventSample() throws Exception {
+        MockHttpServletRequest request = this.mockMvc.perform(get("/events/sample"))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(request().sessionAttribute("event", notNullValue()))
+                .andReturn().getRequest();
+        Object event = request.getSession().getAttribute("event");
+        System.out.println(event);
     }
 }
